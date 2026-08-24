@@ -1,0 +1,4 @@
+## Append samples of your project ##
+resources:
+- mink_v1_broker.yaml
+# +kubebuilder:scaffold:manifestskustomizesamples
