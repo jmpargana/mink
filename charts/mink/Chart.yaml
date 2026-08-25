@@ -1,0 +1,17 @@
+apiVersion: v2
+name: mink
+description: A Helm chart for deploying the MINK Kubernetes operator for Musil message brokers
+type: application
+version: 0.1.0 # x-release-please-version
+appVersion: "0.1.0" # x-release-please-version
+keywords:
+  - musil
+  - message-broker
+  - operator
+  - kubernetes
+home: https://github.com/jmpargana/mink
+sources:
+  - https://github.com/jmpargana/mink
+maintainers:
+  - name: jmpargana
+    url: https://github.com/jmpargana

@@ -1,0 +1,94 @@
+# -- Number of operator replicas
+replicaCount: 1
+
+image:
+  # -- Operator image repository
+  repository: ghcr.io/jmpargana/mink
+  # -- Operator image pull policy
+  pullPolicy: IfNotPresent
+  # -- Overrides the image tag (default is the chart appVersion)
+  tag: ""
+
+# -- Image pull secrets
+imagePullSecrets: []
+# -- Override the chart name
+nameOverride: ""
+# -- Override the full release name
+fullnameOverride: ""
+
+serviceAccount:
+  # -- Create a ServiceAccount
+  create: true
+  # -- Annotations for the ServiceAccount
+  annotations: {}
+  # -- Override ServiceAccount name
+  name: ""
+
+# -- Pod annotations
+podAnnotations: {}
+
+# -- Pod security context
+podSecurityContext:
+  runAsNonRoot: true
+  seccompProfile:
+    type: RuntimeDefault
+
+# -- Container security context
+securityContext:
+  readOnlyRootFilesystem: true
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+      - ALL
+
+# -- Resource limits and requests
+resources:
+  limits:
+    cpu: 500m
+    memory: 128Mi
+  requests:
+    cpu: 10m
+    memory: 64Mi
+
+# -- Node selector
+nodeSelector: {}
+
+# -- Tolerations
+tolerations: []
+
+# -- Affinity rules
+affinity: {}
+
+# -- Priority class name
+priorityClassName: ""
+
+leaderElection:
+  # -- Enable leader election (set to true when running multiple replicas)
+  enabled: true
+
+networkPolicy:
+  # -- Enable NetworkPolicy for the operator
+  enabled: false
+
+# -- Optional Broker CR (disabled by default)
+broker:
+  enabled: false
+  # -- Full spec passed directly to the Broker CR
+  # @default -- see values.yaml
+  spec: {}
+  #   storageSize: "1Gi"
+  #   replicas: 1
+  #   port: 9092
+  #   image: "ghcr.io/jmpargana/musil-server:0.1.5"
+
+# -- Optional Topic CR (disabled by default)
+topic:
+  enabled: false
+  # -- Full spec passed directly to the Topic CR
+  # @default -- see values.yaml
+  spec: {}
+  #   name: "my-topic"
+  #   numPartitions: 3
+  #   replicationFactor: 1
+  #   brokerRef: "broker-sample"
+  #   seederImage: "ghcr.io/jmpargana/musil-seeder:0.1.5"

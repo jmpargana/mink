@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "mink.fullname" . }}-test-health"
+  labels:
+    {{- include "mink.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox:1.36
+      command: ['wget']
+      args: ['--timeout=5', '-qO-', 'http://{{ include "mink.fullname" . }}:8081/healthz']
+  restartPolicy: Never
