@@ -1,0 +1,76 @@
+{{ template "chart.header" . }}
+{{ template "chart.versionBadge" . }}{{ template "chart.typeBadge" . }}{{ template "chart.appVersionBadge" . }}
+
+{{ template "chart.description" . }}
+
+{{ template "chart.homepageLine" . }}
+
+{{ template "chart.maintainersSection" . }}
+
+{{ template "chart.sourcesSection" . }}
+
+## Prerequisites
+
+- Kubernetes 1.28+
+- Helm 3.8+ (OCI support)
+
+## Installation
+
+```bash
+helm install mink oci://ghcr.io/jmpargana/charts/mink --version {{ template "chart.version" . }}
+```
+
+## Upgrading CRDs
+
+Helm does not upgrade CRDs automatically. After upgrading the chart, apply CRDs manually:
+
+```bash
+kubectl apply -f https://raw.githubusercontent.com/jmpargana/mink/v{{ template "chart.version" . }}/charts/mink/crds/mink.io.musil_brokers.yaml
+kubectl apply -f https://raw.githubusercontent.com/jmpargana/mink/v{{ template "chart.version" . }}/charts/mink/crds/mink.io.musil_topics.yaml
+```
+
+{{ template "chart.valuesSection" . }}
+
+## Production Values Example
+
+```yaml
+replicaCount: 1
+
+resources:
+  limits:
+    cpu: "1"
+    memory: 256Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+affinity:
+  nodeAffinity:
+    preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        preference:
+          matchExpressions:
+            - key: node-role.kubernetes.io/control-plane
+              operator: Exists
+
+networkPolicy:
+  enabled: true
+
+broker:
+  enabled: true
+  spec:
+    storageSize: "10Gi"
+    replicas: 3
+    port: 9092
+    storageClassName: fast-ssd
+
+topic:
+  enabled: true
+  spec:
+    name: "events"
+    numPartitions: 6
+    replicationFactor: 3
+    brokerRef: "mink-broker"
+```
+
+{{ template "helm-docs.versionFooter" . }}

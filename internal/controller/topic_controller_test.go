@@ -54,7 +54,12 @@ var _ = Describe("Topic Controller", func() {
 						Name:      resourceName,
 						Namespace: resourceNamespace,
 					},
-					// TODO(user): Specify other spec details if needed.
+					Spec: minkv1.TopicSpec{
+						Name:              "test-topic",
+						NumPartitions:     3,
+						ReplicationFactor: 1,
+						BrokerRef:         "nonexistent-broker",
+					},
 				}
 				Expect(k8sClient.Create(ctx, resource)).To(Succeed())
 			}

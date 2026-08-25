@@ -1,6 +1,20 @@
 # mink
 
-A Helm chart for deploying the MINK Kubernetes operator for Musil message brokers.
+![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.1.0](https://img.shields.io/badge/AppVersion-0.1.0-informational?style=flat-square)
+
+A Helm chart for deploying the MINK Kubernetes operator for Musil message brokers
+
+**Homepage:** <https://github.com/jmpargana/mink>
+
+## Maintainers
+
+| Name | Email | Url |
+| ---- | ------ | --- |
+| jmpargana |  | <https://github.com/jmpargana> |
+
+## Source Code
+
+* <https://github.com/jmpargana/mink>
 
 ## Prerequisites
 
@@ -18,41 +32,38 @@ helm install mink oci://ghcr.io/jmpargana/charts/mink --version 0.1.0
 Helm does not upgrade CRDs automatically. After upgrading the chart, apply CRDs manually:
 
 ```bash
-kubectl apply -f https://raw.githubusercontent.com/jmpargana/mink/v<VERSION>/charts/mink/crds/mink.io.musil_brokers.yaml
-kubectl apply -f https://raw.githubusercontent.com/jmpargana/mink/v<VERSION>/charts/mink/crds/mink.io.musil_topics.yaml
+kubectl apply -f https://raw.githubusercontent.com/jmpargana/mink/v0.1.0/charts/mink/crds/mink.io.musil_brokers.yaml
+kubectl apply -f https://raw.githubusercontent.com/jmpargana/mink/v0.1.0/charts/mink/crds/mink.io.musil_topics.yaml
 ```
 
 ## Values
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| replicaCount | int | `1` | Number of operator replicas |
-| image.repository | string | `"ghcr.io/jmpargana/mink"` | Operator image repository |
+| affinity | object | `{}` | Affinity rules |
+| broker | object | `{"enabled":false,"spec":{}}` | Optional Broker CR (disabled by default) |
+| broker.spec | object | see values.yaml | Full spec passed directly to the Broker CR |
+| fullnameOverride | string | `""` | Override the full release name |
 | image.pullPolicy | string | `"IfNotPresent"` | Operator image pull policy |
+| image.repository | string | `"ghcr.io/jmpargana/mink"` | Operator image repository |
 | image.tag | string | `""` | Overrides the image tag (default is the chart appVersion) |
 | imagePullSecrets | list | `[]` | Image pull secrets |
+| leaderElection.enabled | bool | `true` | Enable leader election (set to true when running multiple replicas) |
 | nameOverride | string | `""` | Override the chart name |
-| fullnameOverride | string | `""` | Override the full release name |
-| serviceAccount.create | bool | `true` | Create a ServiceAccount |
-| serviceAccount.annotations | object | `{}` | Annotations for the ServiceAccount |
-| serviceAccount.name | string | `""` | Override ServiceAccount name |
-| podAnnotations | object | `{}` | Pod annotations |
-| podSecurityContext | object | restricted PSS | Pod security context |
-| securityContext | object | hardened | Container security context |
-| resources.limits.cpu | string | `"500m"` | CPU limit |
-| resources.limits.memory | string | `"128Mi"` | Memory limit |
-| resources.requests.cpu | string | `"10m"` | CPU request |
-| resources.requests.memory | string | `"64Mi"` | Memory request |
-| nodeSelector | object | `{}` | Node selector |
-| tolerations | list | `[]` | Tolerations |
-| affinity | object | `{}` | Affinity rules |
-| priorityClassName | string | `""` | Priority class name |
-| leaderElection.enabled | bool | `true` | Enable leader election |
 | networkPolicy.enabled | bool | `false` | Enable NetworkPolicy for the operator |
-| broker.enabled | bool | `false` | Deploy an optional Broker CR |
-| broker.spec | object | `{}` | Full Broker CR spec (passthrough) |
-| topic.enabled | bool | `false` | Deploy an optional Topic CR |
-| topic.spec | object | `{}` | Full Topic CR spec (passthrough) |
+| nodeSelector | object | `{}` | Node selector |
+| podAnnotations | object | `{}` | Pod annotations |
+| podSecurityContext | object | `{"runAsNonRoot":true,"seccompProfile":{"type":"RuntimeDefault"}}` | Pod security context |
+| priorityClassName | string | `""` | Priority class name |
+| replicaCount | int | `1` | Number of operator replicas |
+| resources | object | `{"limits":{"cpu":"500m","memory":"128Mi"},"requests":{"cpu":"10m","memory":"64Mi"}}` | Resource limits and requests |
+| securityContext | object | `{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"readOnlyRootFilesystem":true}` | Container security context |
+| serviceAccount.annotations | object | `{}` | Annotations for the ServiceAccount |
+| serviceAccount.create | bool | `true` | Create a ServiceAccount |
+| serviceAccount.name | string | `""` | Override ServiceAccount name |
+| tolerations | list | `[]` | Tolerations |
+| topic | object | `{"enabled":false,"spec":{}}` | Optional Topic CR (disabled by default) |
+| topic.spec | object | see values.yaml | Full spec passed directly to the Topic CR |
 
 ## Production Values Example
 
@@ -95,3 +106,6 @@ topic:
     replicationFactor: 3
     brokerRef: "mink-broker"
 ```
+
+----------------------------------------------
+Autogenerated from chart metadata using [helm-docs v1.14.2](https://github.com/norwoodj/helm-docs/releases/v1.14.2)

@@ -42,8 +42,8 @@ const (
 	brokerResolvedVolume = "resolved-config"
 	brokerResolvedMount  = "/etc/musil"
 	brokerDataVolume     = "data"
-	// default path in musil
-	brokerDataMount = "/data"
+	brokerContainerName  = "broker"
+	brokerDataMount      = "/data"
 )
 
 // BrokerReconciler reconciles a Broker object.
@@ -92,7 +92,7 @@ func (r *BrokerReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctr
 		svc.Spec.ClusterIP = corev1.ClusterIPNone
 		svc.Spec.Selector = map[string]string{"app.kubernetes.io/name": broker.Name}
 		svc.Spec.Ports = []corev1.ServicePort{{
-			Name:       "broker",
+			Name:       brokerContainerName,
 			Port:       port,
 			TargetPort: intstr.FromInt32(port),
 			Protocol:   corev1.ProtocolTCP,
@@ -128,7 +128,7 @@ brokers = []
 	if broker.Spec.StorageSize == "" {
 		log.Error(fmt.Errorf("storageSize is required"), "invalid Broker spec")
 		meta.SetStatusCondition(&broker.Status.Conditions, metav1.Condition{
-			Type:               "Ready",
+			Type:               conditionReady,
 			Status:             metav1.ConditionFalse,
 			Reason:             "InvalidSpec",
 			Message:            "spec.storageSize is required",
@@ -142,7 +142,7 @@ brokers = []
 	if err != nil {
 		log.Error(err, "invalid storageSize", "value", broker.Spec.StorageSize)
 		meta.SetStatusCondition(&broker.Status.Conditions, metav1.Condition{
-			Type:               "Ready",
+			Type:               conditionReady,
 			Status:             metav1.ConditionFalse,
 			Reason:             "InvalidSpec",
 			Message:            fmt.Sprintf("invalid storageSize %q: %v", broker.Spec.StorageSize, err),
@@ -188,11 +188,11 @@ cp /config/node-${ordinal}.toml /etc/musil/server.toml
 					},
 				}},
 				Containers: []corev1.Container{{
-					Name:  "broker",
+					Name:  brokerContainerName,
 					Image: image,
 					Args:  []string{"--config", brokerResolvedMount + "/server.toml", "--path", brokerDataMount},
 					Ports: []corev1.ContainerPort{{
-						Name:          "broker",
+						Name:          brokerContainerName,
 						ContainerPort: port,
 						Protocol:      corev1.ProtocolTCP,
 					}},
@@ -232,7 +232,7 @@ cp /config/node-${ordinal}.toml /etc/musil/server.toml
 	// Without this, Topic controller won't be able to seed broker.
 	broker.Status.URL = url
 	condition := metav1.Condition{
-		Type:               "Ready",
+		Type:               conditionReady,
 		ObservedGeneration: broker.Generation,
 		LastTransitionTime: metav1.Now(),
 	}
