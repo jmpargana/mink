@@ -75,13 +75,13 @@ func (r *TopicReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl
 		return ctrl.Result{}, nil
 	}
 
-	// Stop if already succeeded. 
+	// Stop if already succeeded.
 	// As we don't have lifecycle to the `Topic` CRD, once it's seeded we ignore.
 	if meta.IsStatusConditionTrue(topic.Status.Conditions, "Ready") {
 		return ctrl.Result{}, nil
 	}
 
-	// Find matching Broker. It doesn't matter which instance. 
+	// Find matching Broker. It doesn't matter which instance.
 	// Metadata is forwarded to quorum (once controller CRD exists).
 	// TODO: any broker works, but maybe that is not clear in the `brokerRef` field.
 	var broker minkv1.Broker
@@ -312,7 +312,7 @@ func (r *TopicReconciler) SetupWithManager(mgr ctrl.Manager) error {
 		For(&minkv1.Topic{}).
 		Owns(&batchv1.Job{}).
 		Owns(&corev1.ConfigMap{}).
-		// TODO: Not sure if this is actually what needs to be done. Once KRaft is in place, 
+		// TODO: Not sure if this is actually what needs to be done. Once KRaft is in place,
 		// single call will be reconciled across all nodes.
 		Watches(&minkv1.Broker{}, handler.EnqueueRequestsFromMapFunc(
 			func(ctx context.Context, obj client.Object) []reconcile.Request {

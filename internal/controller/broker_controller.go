@@ -43,7 +43,7 @@ const (
 	brokerResolvedMount  = "/etc/musil"
 	brokerDataVolume     = "data"
 	// default path in musil
-	brokerDataMount      = "/data"
+	brokerDataMount = "/data"
 )
 
 // BrokerReconciler reconciles a Broker object.
@@ -81,7 +81,7 @@ func (r *BrokerReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctr
 	}
 	image := broker.Spec.Image
 	if image == "" {
-		image = "ghcr.io/jmpargana/musil-broker:0.1.5"
+		image = "ghcr.io/jmpargana/musil-server:0.1.5"
 	}
 
 	// We want to provide access to each individual pod, instead of hiding behind a service.

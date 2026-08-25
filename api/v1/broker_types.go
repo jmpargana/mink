@@ -24,7 +24,7 @@ import (
 // BrokerSpec defines the desired state of Broker.
 type BrokerSpec struct {
 	// +optional
-	// +kubebuilder:default="ghcr.io/jmpargana/musil-broker:0.1.5"
+	// +kubebuilder:default="ghcr.io/jmpargana/musil-server:0.1.5"
 	Image string `json:"image,omitempty"`
 
 	// +optional

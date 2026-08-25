@@ -46,6 +46,7 @@ spec:
               name:
                 type: string
               numPartitions:
+                default: 2
                 description: |-
                   Number of partitions for this topic.
                   NOTE: updating this field after initial creation has no effect — musil
@@ -126,6 +127,7 @@ spec:
                 - type
                 x-kubernetes-list-type: map
               retryCount:
+                default: 3
                 description: Number of times the controller has recreated a failed
                   seeder Job.
                 format: int32

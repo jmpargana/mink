@@ -40,7 +40,7 @@ spec:
             description: BrokerSpec defines the desired state of Broker.
             properties:
               image:
-                default: ghcr.io/jmpargana/musil-broker:0.1.5
+                default: ghcr.io/jmpargana/musil-server:0.1.5
                 type: string
               port:
                 default: 9092
@@ -53,6 +53,9 @@ spec:
               storageClassName:
                 type: string
               storageSize:
+                description: |-
+                  Storage Size is a weird variable. It needs to be coordinated with the storage size in musil itself.
+                  Default is 1GB, but actually that's also the segment default size, so full features won't be available straight away.
                 type: string
             required:
             - storageSize
