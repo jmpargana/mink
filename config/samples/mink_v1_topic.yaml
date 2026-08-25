@@ -1,0 +1,13 @@
+apiVersion: mink.io.musil/v1
+kind: Topic
+metadata:
+  labels:
+    app.kubernetes.io/name: mink
+    app.kubernetes.io/managed-by: kustomize
+  name: topic-sample
+spec:
+  name: "my-topic"
+  numPartitions: 3
+  replicationFactor: 1
+  brokerRef: "broker-sample"
+  seederImage: "ghcr.io/jmpargana/musil-seeder:0.1.5"

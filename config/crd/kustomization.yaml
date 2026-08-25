@@ -3,6 +3,7 @@
 # It should be run by config/default
 resources:
 - bases/mink.io.musil_brokers.yaml
+- bases/mink.io.musil_topics.yaml
 # +kubebuilder:scaffold:crdkustomizeresource
 
 patches:
