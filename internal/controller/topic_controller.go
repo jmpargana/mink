@@ -43,6 +43,10 @@ const (
 	seederMountPath  = "/tmp/seeder-cfg"
 	seederConfigFile = "seeder.toml"
 	maxRetries       = 3
+
+	conditionReady   = "Ready"
+	conditionFailed  = "Failed"
+	conditionSeeding = "Seeding"
 )
 
 // TopicReconciler reconciles a Topic object.
@@ -71,13 +75,13 @@ func (r *TopicReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl
 	}
 
 	// Stop if permanently failed.
-	if meta.IsStatusConditionTrue(topic.Status.Conditions, "Failed") {
+	if meta.IsStatusConditionTrue(topic.Status.Conditions, conditionFailed) {
 		return ctrl.Result{}, nil
 	}
 
 	// Stop if already succeeded.
 	// As we don't have lifecycle to the `Topic` CRD, once it's seeded we ignore.
-	if meta.IsStatusConditionTrue(topic.Status.Conditions, "Ready") {
+	if meta.IsStatusConditionTrue(topic.Status.Conditions, conditionReady) {
 		return ctrl.Result{}, nil
 	}
 
@@ -139,7 +143,7 @@ func (r *TopicReconciler) handleExistingJob(ctx context.Context, topic *minkv1.T
 
 	if isJobSucceeded(job) {
 		meta.SetStatusCondition(&topic.Status.Conditions, metav1.Condition{
-			Type:               "Seeding",
+			Type:               conditionSeeding,
 			Status:             metav1.ConditionFalse,
 			Reason:             "Completed",
 			Message:            "Seeder job completed successfully",
@@ -147,7 +151,7 @@ func (r *TopicReconciler) handleExistingJob(ctx context.Context, topic *minkv1.T
 			LastTransitionTime: metav1.Now(),
 		})
 		meta.SetStatusCondition(&topic.Status.Conditions, metav1.Condition{
-			Type:               "Ready",
+			Type:               conditionReady,
 			Status:             metav1.ConditionTrue,
 			Reason:             "Seeded",
 			Message:            "Topic has been seeded into the broker",
@@ -160,7 +164,7 @@ func (r *TopicReconciler) handleExistingJob(ctx context.Context, topic *minkv1.T
 	if isJobFailed(job) {
 		if topic.Status.RetryCount >= maxRetries {
 			meta.SetStatusCondition(&topic.Status.Conditions, metav1.Condition{
-				Type:               "Failed",
+				Type:               conditionFailed,
 				Status:             metav1.ConditionTrue,
 				Reason:             "MaxRetriesExceeded",
 				Message:            fmt.Sprintf("Seeder job failed after %d retries", maxRetries),
@@ -168,7 +172,7 @@ func (r *TopicReconciler) handleExistingJob(ctx context.Context, topic *minkv1.T
 				LastTransitionTime: metav1.Now(),
 			})
 			meta.SetStatusCondition(&topic.Status.Conditions, metav1.Condition{
-				Type:               "Seeding",
+				Type:               conditionSeeding,
 				Status:             metav1.ConditionFalse,
 				Reason:             "Failed",
 				Message:            "Seeder permanently failed",
@@ -263,7 +267,7 @@ func (r *TopicReconciler) createSeederJob(ctx context.Context, topic *minkv1.Top
 		LastTransitionTime: metav1.Now(),
 	})
 	meta.SetStatusCondition(&topic.Status.Conditions, metav1.Condition{
-		Type:               "Seeding",
+		Type:               conditionSeeding,
 		Status:             metav1.ConditionTrue,
 		Reason:             "InProgress",
 		Message:            "Seeder job is running",
