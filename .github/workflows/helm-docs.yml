@@ -1,0 +1,34 @@
+name: Helm Docs
+
+on:
+  pull_request:
+    paths:
+      - "charts/**"
+
+permissions: {}
+
+jobs:
+  helm-docs:
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+
+      - name: Install helm-docs
+        run: |
+          curl -sSL https://github.com/norwoodj/helm-docs/releases/download/v1.14.2/helm-docs_1.14.2_Linux_x86_64.tar.gz | tar xz
+          sudo mv helm-docs /usr/local/bin/
+
+      - name: Run helm-docs
+        run: helm-docs --chart-search-root charts
+
+      - name: Check for drift
+        run: |
+          if ! git diff --exit-code charts/; then
+            echo "::error::helm-docs output is out of date. Run 'helm-docs --chart-search-root charts' locally and commit the result."
+            exit 1
+          fi

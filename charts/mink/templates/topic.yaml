@@ -1,0 +1,10 @@
+{{- if .Values.topic.enabled -}}
+apiVersion: mink.io.musil/v1
+kind: Topic
+metadata:
+  name: {{ include "mink.fullname" . }}-topic
+  labels:
+    {{- include "mink.labels" . | nindent 4 }}
+spec:
+  {{- toYaml .Values.topic.spec | nindent 2 }}
+{{- end }}

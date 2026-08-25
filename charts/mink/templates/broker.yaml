@@ -1,0 +1,10 @@
+{{- if .Values.broker.enabled -}}
+apiVersion: mink.io.musil/v1
+kind: Broker
+metadata:
+  name: {{ include "mink.fullname" . }}-broker
+  labels:
+    {{- include "mink.labels" . | nindent 4 }}
+spec:
+  {{- toYaml .Values.broker.spec | nindent 2 }}
+{{- end }}

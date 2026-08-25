@@ -1,0 +1,45 @@
+MINK operator has been installed successfully!
+
+Namespace: {{ .Release.Namespace }}
+Release:   {{ .Release.Name }}
+
+The operator is now watching for Broker and Topic custom resources.
+
+To verify the operator is running:
+
+  kubectl get pods -n {{ .Release.Namespace }} -l app.kubernetes.io/name={{ include "mink.name" . }}
+
+To deploy a Musil broker, create a Broker CR:
+
+  cat <<EOF | kubectl apply -f -
+  apiVersion: mink.io.musil/v1
+  kind: Broker
+  metadata:
+    name: my-broker
+    namespace: {{ .Release.Namespace }}
+  spec:
+    storageSize: "1Gi"
+    replicas: 1
+    port: 9092
+  EOF
+
+To check broker status:
+
+  kubectl get brokers -n {{ .Release.Namespace }}
+
+To create a topic on the broker:
+
+  cat <<EOF | kubectl apply -f -
+  apiVersion: mink.io.musil/v1
+  kind: Topic
+  metadata:
+    name: my-topic
+    namespace: {{ .Release.Namespace }}
+  spec:
+    name: "events"
+    numPartitions: 3
+    replicationFactor: 1
+    brokerRef: "my-broker"
+  EOF
+
+For more information, visit: https://github.com/jmpargana/mink
