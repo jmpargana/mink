@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/jmpargana/mink/compare/mink-v0.2.0...mink-v0.2.1) (2026-08-25)
+
+
+### Bug Fixes
+
+* publish workflow triggers on mink-v* tags to match release-please ([0b27bee](https://github.com/jmpargana/mink/commit/0b27bee696e6e4466c63ac09dffb3b94983e494c))
+
 ## [0.2.0](https://github.com/jmpargana/mink/compare/mink-v0.1.0...mink-v0.2.0) (2026-08-25)
 
 
