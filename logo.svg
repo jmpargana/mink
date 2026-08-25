@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 280" fill="none">
+  <defs>
+    <linearGradient id="stream" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#326CE5"/>
+      <stop offset="100%" stop-color="#54B8DB"/>
+    </linearGradient>
+    <linearGradient id="helm" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#326CE5"/>
+      <stop offset="100%" stop-color="#1D4ED8"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="600" height="280" rx="16" fill="#0F172A"/>
+
+  <!-- Kubernetes helm wheel (simplified) -->
+  <g transform="translate(100, 140)">
+    <!-- Outer ring -->
+    <circle cx="0" cy="0" r="52" stroke="url(#helm)" stroke-width="4" fill="none"/>
+    <!-- Inner hub -->
+    <circle cx="0" cy="0" r="14" fill="url(#helm)"/>
+    <!-- Spokes (7 like K8s logo) -->
+    <g stroke="url(#helm)" stroke-width="4" stroke-linecap="round">
+      <line x1="0" y1="-18" x2="0" y2="-48"/>
+      <line x1="17.1" y1="-5.6" x2="45.6" y2="-14.8"/>
+      <line x1="10.6" y1="14.6" x2="28.2" y2="38.8"/>
+      <line x1="-10.6" y1="14.6" x2="-28.2" y2="38.8"/>
+      <line x1="-17.1" y1="-5.6" x2="-45.6" y2="-14.8"/>
+    </g>
+    <!-- Spoke endpoints (dots) -->
+    <g fill="url(#helm)">
+      <circle cx="0" cy="-52" r="5"/>
+      <circle cx="49.5" cy="-16.1" r="5"/>
+      <circle cx="30.6" cy="42.1" r="5"/>
+      <circle cx="-30.6" cy="42.1" r="5"/>
+      <circle cx="-49.5" cy="-16.1" r="5"/>
+    </g>
+  </g>
+
+  <!-- Data streams flowing through the wheel -->
+  <g opacity="0.7">
+    <path d="M 30 110 Q 70 110 100 120 Q 130 130 160 120 Q 200 105 240 110" stroke="url(#stream)" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+    <path d="M 30 140 Q 60 140 90 140 Q 150 140 200 140 Q 230 140 260 135" stroke="url(#stream)" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+    <path d="M 30 170 Q 70 170 100 160 Q 130 150 160 160 Q 200 175 240 165" stroke="url(#stream)" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+  </g>
+  <!-- Stream arrow tips -->
+  <g fill="#54B8DB" opacity="0.8">
+    <polygon points="238,106 248,110 238,114"/>
+    <polygon points="258,131 268,135 258,139"/>
+    <polygon points="238,161 248,165 238,169"/>
+  </g>
+
+  <!-- MINK text -->
+  <text x="310" y="130" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="64" font-weight="800" fill="white" letter-spacing="-2">MINK</text>
+
+  <!-- Subtitle -->
+  <text x="310" y="168" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="18" fill="#94A3B8" letter-spacing="3">
+    <tspan fill="#54B8DB">MUSIL</tspan> IN <tspan fill="#326CE5">KUBERNETES</tspan>
+  </text>
+
+  <!-- Tagline -->
+  <text x="310" y="198" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="12" fill="#64748B">A Kubernetes operator for the Musil message broker</text>
+</svg>
