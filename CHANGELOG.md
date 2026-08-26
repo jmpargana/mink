@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.3.0](https://github.com/jmpargana/mink/compare/mink-v0.2.1...mink-v0.3.0) (2026-08-26)
+
+
+### Features
+
+* add dependabot, security scanning, and CI/CD improvements ([6b737fb](https://github.com/jmpargana/mink/commit/6b737fb85b827c7593286085f2dbb5aa2dd9e5d4))
+
+
+### Bug Fixes
+
+* bump vulnerable deps and correct action SHAs ([36ee261](https://github.com/jmpargana/mink/commit/36ee2614e6e68e9be655a33c95e36aac51d0daf7))
+* use make test in coverage workflow for envtest setup ([a16f34f](https://github.com/jmpargana/mink/commit/a16f34fd98b71af8146e0f4beda75aeba4cec89b))
+
 ## [0.2.1](https://github.com/jmpargana/mink/compare/mink-v0.2.0...mink-v0.2.1) (2026-08-25)
 
 
