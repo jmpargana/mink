@@ -23,6 +23,10 @@ jobs:
         with:
           go-version-file: go.mod
 
+      - name: Source environment
+        run: |
+          cat .github/env >> "$GITHUB_ENV"
+
       - name: Check linter configuration
         run: make lint-config
       - name: Run linter
